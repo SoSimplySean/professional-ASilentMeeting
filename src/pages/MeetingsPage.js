@@ -1,14 +1,11 @@
 import { Fragment } from "react";
 
-import HeroBanner from "../components/Layout/MeetingsPage/HeroBanner";
-import MeetingList from "../components/Layout/MeetingsPage/MeetingList";
-// import supabase from "../supabaseClient";
+import Body from "../components/Layout/MeetingsPage/Body";
 
 const MeetingsPage = (props) => {
   return (
     <Fragment>
-      <HeroBanner />
-      <MeetingList />
+      <Body />
     </Fragment>
   );
 };

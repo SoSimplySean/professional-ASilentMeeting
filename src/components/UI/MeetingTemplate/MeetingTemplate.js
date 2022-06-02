@@ -3,12 +3,14 @@ import React, { useEffect, useState } from "react";
 import supabase from "../../../supabaseClient";
 
 import { useParams } from "react-router-dom";
-
 import { Box } from "@mui/material";
 import { Typography } from "@mui/material";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const MeetingTemplate = () => {
   const [meeting, setMeeting] = useState({});
+  const [value, setValue] = useState("");
   let { id } = useParams();
 
   useEffect(() => {
@@ -44,6 +46,9 @@ const MeetingTemplate = () => {
       <Typography variant="body1" sx={{ fontWeight: "bold", mt: "0.5rem" }}>
         {meeting.held_at}
       </Typography>
+      <Box sx={{ mt: "3rem" }}>
+        <ReactQuill theme="snow" value={value} onChange={setValue} />
+      </Box>
     </Box>
   );
 };

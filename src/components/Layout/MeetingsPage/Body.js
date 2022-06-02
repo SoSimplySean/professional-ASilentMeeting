@@ -2,7 +2,15 @@ import { useState, useEffect, useRef } from "react";
 
 import supabase from "../../../supabaseClient";
 
-import { Grid, Button, Typography, Modal, Box, Input } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Button, Typography, Modal, Box, Input } from "@mui/material";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 
 const style = {
   modal: {
@@ -26,10 +34,12 @@ const style = {
   },
 };
 
-const HeroBanner = () => {
+const Body = () => {
   const [open, setOpen] = useState(false);
   const [meetings, setMeetings] = useState([]);
   const newMeetingTitleRef = useRef();
+  let navigate = useNavigate();
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -59,14 +69,16 @@ const HeroBanner = () => {
   };
 
   return (
-    <Grid
+    <Box
       sx={{
         mt: "4rem",
       }}
     >
+      {/* HERO BANNER */}
       <Typography variant="h3" component="h1" sx={{ fontWeight: "bold" }}>
         Meetings
       </Typography>
+      {/* NEW MEETING CTA */}
       <Button sx={{ mt: "2rem" }} variant="contained" onClick={handleOpen}>
         Create new meeting
       </Button>
@@ -93,11 +105,39 @@ const HeroBanner = () => {
           </Button>
         </Box>
       </Modal>
-      <Typography variant="body1" sx={{ mt: "3rem" }}>
-        {JSON.stringify(meetings)}
-      </Typography>
-    </Grid>
+      {/* MEETING LIST */}
+      <TableContainer component={Paper} sx={{ mt: "3rem" }}>
+        <Table size="small" sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ fontWeight: "bold" }}>Title</TableCell>
+              <TableCell align="right" sx={{ fontWeight: "bold" }}>
+                Date
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {meetings.map((meeting) => (
+              <TableRow
+                hover
+                key={meeting.name}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  cursor: "pointer",
+                }}
+                onClick={() => navigate(`/meetings/${meeting.id}`)}
+              >
+                <TableCell component="th" scope="row">
+                  {meeting.title}
+                </TableCell>
+                <TableCell align="right">{meeting.held_at}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };
 
-export default HeroBanner;
+export default Body;
